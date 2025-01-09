@@ -30,15 +30,15 @@ class Grade:
 
 
 def main():
-    kor = int(input("국어 점수 입력 : "))
-    eng = int(input("영어 점수 입력 : "))
-    math = int(input("수학 점수 입력 : "))
+    kor = int(input("국어 점수 입력: "))
+    eng = int(input("영어 점수 입력: "))
+    math = int(input("수학 점수 입력: "))
 
     grade = Grade(kor,eng,math)
 
-    print("총점 : ",grade.get_total())
-    print("평균 : ",grade.get_avg())
-    print("학점 : ",grade.get_grade())
+    print("총점: ",grade.get_total())
+    print("평균: ",grade.get_avg())
+    print("학점: ",grade.get_grade())
     
 
 main()
