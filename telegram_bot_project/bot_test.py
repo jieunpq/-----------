@@ -1,6 +1,6 @@
 import telebot
 
-API_KEY = "7153124936:AAF1JXT_vudH5F1Gg_VYLBmN3PymuKkbmxM" # 📌 본인의 API 키를 입력
+API_KEY = "7153124936:AAF1JXT_vudH5F1Gg_VYLBmN3PymuKkbmxM" # 📌 본인의 API 키 입력
 
 bot = telebot.TeleBot(API_KEY)
 
