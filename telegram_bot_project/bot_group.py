@@ -1,22 +1,12 @@
-import telebot
-import schedule
-import time
+def setup_group_messages(bot, group_chat_id):
+    @bot.message_handler(commands=['groupmsg'])
+    def send_group_message(message):
+        if len(message.text.split()) > 1:
+            text = message.text.split(maxsplit=1)[1]  # 명령어 뒤의 텍스트를 추출
+        else:
+            text = ""  # 기본 메시지 설정
 
-API_KEY = "7153124936:AAF1JXT_vudH5F1Gg_VYLBmN3PymuKkbmxM"  # 📌 본인의 API 키 입력
-GROUP_CHAT_ID = "-4601050259"  # 📌 그룹의 Chat ID 입력
+        bot.send_message(group_chat_id, text)  # 그룹 채팅에 메시지 보내기
+        bot.reply_to(message, f"메시지가 그룹 '{group_chat_id}'에 전송되었습니다.💌")  # 사용자에게 전송 확인 메시지 보내기
 
-bot = telebot.TeleBot(API_KEY)
-
-# 그룹에 메시지 전송하는 함수
-def send_group_message():
-    bot.send_message(GROUP_CHAT_ID, "📢 이 메시지는 일정 시간마다 자동으로 전송됩니다! ⏰")
- 
-# 1시간마다 메시지 전송
-schedule.every(1).hours.do(send_group_message)  # ⏰ 원하는 간격으로 변경 가능
-
-print("🤖 그룹 메시지 봇이 실행 중입니다...")
-
-# 무한 루프로 스케줄 실행 (반복 실행)
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+        

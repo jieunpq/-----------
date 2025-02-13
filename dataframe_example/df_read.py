@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 df = pd.DataFrame( {
     '이름': ['피카츄','라이츄','리자드','리자몽','꼬부기','어니부기'],
@@ -66,5 +67,123 @@ print(df.iloc[2:5,1:3])
 # ========================================
 # loc(라벨로 인덱싱/끝번호 포함)
 
+import pandas as pd
+data = {
+    '이름' : ['유재석', '박명수', '정준하', '노홍철', '정형돈', '하하'],
+    '지역' : ['서울', '부산', '부산', '서울', '서울', '서울'],
+    '나이' : [19, 23, 20, 25, 18, 21],
+    '국어점수' : [86, 90, 80, 65, 50, 60],
+    '수학점수' : [86, 100, 66, 70, 40, 80],
+    '코딩' : ['Python', 'Java', '', 'Javascript', 'PYTHON', '']
+}
+df = pd.DataFrame(data, index=['1번', '2번', '3번', '4번', '5번', '6번'])
+df.index.name = '번호'
+
+print(df)
+
+print(df.loc['1번']) # 1번 전체 데이터
+print(df.loc['1번','나이']) # 1개 데이터 뽑아내기
+print(df.loc[['1번','2번'],'수학점수'])
+print(df.loc[['1번','2번'],['수학점수','국어점수']])
+
+# loc 슬라이싱 (끝번호 포함)
+print(df.loc['1번':'4번','지역':'국어점수'])
+
+print(df.loc[df['나이']>=20, ['이름','지역','나이']])
+
+print(df.loc[(df['지역']=='부산') & (df['나이']>=20)])
+
+# ========================================
+# 데이터 프레임 함수
+
+# 유씨 성을 가진 사람 뽑아내기
+
+filter = df['이름'].str.startswith('유')
+print(df[filter])
+
+# 이름에 '하'가 들어가는 사람
+filter = df['이름'].str.contains('하')
+print(df[filter])
+
+filter = df['코딩'].isin(['Python','Java'])
+print(df[filter])
+
+filter = df['코딩'].str.lower().isin(['python','java'])
+print(df[filter])
+
+# ========================================
+# 결측치 처리
+
+data = {
+    '이름' : ['유재석', '박명수', '정준하', '노홍철', '정형돈', '하하'],
+    '지역' : ['서울', '부산', np.nan, '서울', '서울', '서울'],
+    '나이' : [19, 23, 20, 25, 18, 21],
+    '국어점수' : [86, 90, 80, 65, 50, 60],
+    '수학점수' : [86, 100, 66, 70, 40, 80],
+    '코딩' : ['Python', 'Java', np.nan, 'Javascript', 'PYTHON', np.nan]
+}
+df = pd.DataFrame(data, index=['1번', '2번', '3번', '4번', '5번', '6번'])
+df.index.name = '번호'
+
+print(df)
+
+# 결측치 지정
+df['지역'] = np.nan
+print(df)
+
+print(df.fillna('')) # NaN 데이터를 빈칸으로 채움
+
+print(df.fillna('없음')) # NaN 데이터를 없음으로 채움
+
+df['코딩'].fillna('확인중',inplace=True) # 원본에 적용
+
+print(df)
+
+# ========================================
+# 데이터 제외
+
+# 결측치는 데이터 분석에 방해가 됨
+
+print(df.dropna(inplace=True))
+
+print(df)
 
 
+# ========================================
+# 데이터 정렬
+# 인덱스 기준으로 정렬
+
+data = {
+    '이름' : ['유재석', '박명수', '정준하', '노홍철', '정형돈', '하하'],
+    '지역' : ['서울', '부산', '부산', '서울', '서울', '서울'],
+    '나이' : [19, 23, 20, 25, 18, 21],
+    '국어점수' : [86, 90, 80, 65, 50, 60],
+    '수학점수' : [86, 100, 66, 70, 40, 80],
+    '코딩' : ['Python', 'Java', np.nan, 'Javascript', 'PYTHON', np.nan]
+}
+df = pd.DataFrame(data, index=['1번', '2번', '3번', '4번', '5번', '6번'])
+df.index.name = '번호'
+
+print(df.sort_index()) # 오름차순
+print(df.sort_index(ascending=False)) # 내림차순
+
+# 컬럼 기준으로 정렬
+
+print(df.sort_values(by='나이')) #오름차순
+print(df.sort_values(by='나이',ascending=False)) # 내림차순
+
+# 컬럼을 기준을 두가지로 order by ename asc, empno desc
+print(df.sort_values(['지역','국어점수']))
+# 지역은 오름차순, 국어점수는 내림차순으로
+
+print(df['수학점수'].sort_values)
+
+# ========================================
+# 함수 적용 - apply
+
+def age_add(age):
+    return str(age) + "세"
+
+df['나이']= df['나이'].apply(age_add)
+
+print(df)
